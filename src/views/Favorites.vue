@@ -29,18 +29,20 @@ export default defineComponent({
   setup() {
     const store = useStore();
 
+    const onTriggerFavorite = ({ src, isFavorite }: Card) => {
+      const list = [...store.state.favoriteList];
+
+      if (isFavorite) {
+        list.splice(list.indexOf(src), 1);
+      } else {
+        list.push(src);
+      }
+
+      store.dispatch(ActionTypes.SetFavoriteList, list);
+    };
+
     return {
-      onTriggerFavorite: ({ src, isFavorite }: Card) => {
-        const list = [...store.state.favoriteList];
-
-        if (isFavorite) {
-          list.splice(list.indexOf(src), 1);
-        } else {
-          list.push(src);
-        }
-
-        store.dispatch(ActionTypes.SetFavoriteList, list);
-      },
+      onTriggerFavorite,
       favoriteList: computed(() => store.state.favoriteList),
       getFavoriteList: () => store.dispatch(ActionTypes.GetFavoriteList)
     };

@@ -2,13 +2,13 @@ import { ActionContext } from "vuex";
 import { RootState } from "./types";
 import ActionTypes from "./action-types";
 import MutationTypes from "./mutation-types";
-import { getBreedsList, getRandomDogsList } from "@/api/breeds";
 
+import { getBreedsList, getRandomDogsList } from "@/api/breeds";
 import { getRandomDogsListByBreed } from "@/api/breed";
 
-interface BreedRequest {
+interface DogsRequest {
   count: number;
-  breed: string;
+  merge: boolean;
 }
 
 export default {
@@ -19,11 +19,24 @@ export default {
     commit(MutationTypes.SetBreedsList, Object.keys(message));
   },
   async [ActionTypes.GetRandomDogsList](
-    { commit }: ActionContext<RootState, RootState>,
-    count: number
+    { commit, state }: ActionContext<RootState, RootState>,
+    { count, merge }: DogsRequest
   ): Promise<void> {
-    const { message } = await getRandomDogsList(count);
-    commit(MutationTypes.SetDogsList, message);
+    const request = state.breedName
+      ? getRandomDogsListByBreed
+      : getRandomDogsList;
+
+    const { message } = await request(count, state.breedName);
+    let newList = [];
+
+    if (merge) {
+      const { dogsList } = state;
+      newList = [...dogsList, ...message];
+    } else {
+      newList = message;
+    }
+
+    commit(MutationTypes.SetDogsList, newList);
   },
   [ActionTypes.GetFavoriteList]({
     commit
@@ -38,12 +51,5 @@ export default {
     commit(MutationTypes.SetFavoriteList, list);
     const stringifiedList = JSON.stringify(list);
     localStorage.setItem("favoriteList", stringifiedList);
-  },
-  async [ActionTypes.getRandomDogsListByBreed](
-    { commit }: ActionContext<RootState, RootState>,
-    { count, breed }: BreedRequest
-  ) {
-    const { message } = await getRandomDogsListByBreed(count, breed);
-    commit(MutationTypes.SetDogsList, message);
   }
 };

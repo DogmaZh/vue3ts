@@ -15,9 +15,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-
-export default defineComponent({
+export default {
   name: "base-icon",
   props: {
     iconName: {
@@ -40,5 +38,5 @@ export default defineComponent({
       default: "0 0 15 15"
     }
   }
-});
+};
 </script>

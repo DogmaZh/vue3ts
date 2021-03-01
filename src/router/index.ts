@@ -4,14 +4,12 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     name: "home",
-    component: () =>
-      import(/* webpackChunkName: "group-foo" */ "@/views/Home.vue")
+    component: () => import("@/views/Home.vue")
   },
   {
     path: "/favorites",
     name: "favorites",
-    component: () =>
-      import(/* webpackChunkName: "group-bar" */ "@/views/Favorites.vue")
+    component: () => import("@/views/Favorites.vue")
   }
 ];
 

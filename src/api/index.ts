@@ -8,12 +8,22 @@ export default class HTTP {
   }
 
   async get(url: string, options?: object) {
-    const { data } = await axios.get(`${this.base + url}`, options);
-    return data;
+    try {
+      const { data } = await axios.get(`${this.base + url}`, options);
+
+      return data;
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   async post(url: string, options?: object) {
-    const { data } = await axios.post(`${this.base + url}`, options);
-    return data;
+    try {
+      const { data } = await axios.post(`${this.base + url}`, options);
+
+      return data;
+    } catch (e) {
+      console.log(e);
+    }
   }
 }

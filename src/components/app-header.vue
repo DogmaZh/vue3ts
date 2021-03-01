@@ -1,6 +1,6 @@
 <template>
   <header class="header">
-    <div class="header__title">{{ title }}</div>
+    <div class="header__title" @click="toTop">{{ title }}</div>
     <div class="header__breed-select">
       <base-select
         :modelValue="breedName"
@@ -13,8 +13,8 @@
     </div>
     <nav class="header__links">
       <router-link
-        class="header__link"
         v-for="item in items"
+        class="header__link"
         active-class="header__link--active"
         :key="item.id"
         :to="{ name: item.route }"
@@ -48,19 +48,18 @@ export default defineComponent({
   setup() {
     const store = useStore();
 
-    const setBreedName = (value: string) =>
-      store.commit(MutationTypes.SetBreedName, value);
-
-    const getBreedsList = () => store.dispatch(ActionTypes.GetBreedsList);
-
     return {
+      breedsList: computed(() => store.state.breedsList),
+      getBreedsList: () => store.dispatch(ActionTypes.GetBreedsList),
+      toTop: () =>
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        }),
       breedName: computed({
         get: () => store.state.breedName,
-        set: setBreedName
-      }),
-      breedsList: computed(() => store.state.breedsList),
-      getBreedsList,
-      setBreedName
+        set: (value: string) => store.commit(MutationTypes.SetBreedName, value)
+      })
     };
   },
   async mounted() {
@@ -71,16 +70,20 @@ export default defineComponent({
 
 <style lang="scss">
 .header {
+  position: sticky;
+  top: 0;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   padding: 11px 40px;
   background-color: #c4c4c4;
+  z-index: 100;
 
   &__title {
     font-weight: 800;
     font-size: 22px;
     margin-right: 30px;
+    cursor: pointer;
   }
 
   &__breed-select {

@@ -8,7 +8,12 @@
       }}
       Dogs List
     </h1>
-    <cards-list v-if="!loading" class="home__list">
+    <cards-list
+      v-if="inited"
+      class="home__list"
+      :loading="loading"
+      @getMore="loadMore"
+    >
       <card-item
         v-for="dog in dogsList"
         :key="dog"
@@ -17,7 +22,7 @@
         @onTriggerFavorite="onTriggerFavorite"
       ></card-item>
     </cards-list>
-    <h3 v-if="loading" class="home__loading">Loading...</h3>
+    <h3 v-if="loading || !inited" class="home__loading">Loading...</h3>
   </div>
 </template>
 
@@ -37,50 +42,49 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const breedName = computed(() => store.state.breedName);
+    const loading = ref(false);
+    const inited = ref(false);
 
-    const getRandomDogsList = (count: number) =>
-      store.dispatch(ActionTypes.GetRandomDogsList, count);
+    const getRandomDogsList = async (count: number, merge?: boolean) => {
+      loading.value = true;
+      await store.dispatch(ActionTypes.GetRandomDogsList, { count, merge });
+      loading.value = false;
+    };
 
-    const getRandomDogsListByBreed = (count: number, breed: string) => {
-      store.dispatch(ActionTypes.getRandomDogsListByBreed, { count, breed });
+    const loadMore = async () => {
+      await getRandomDogsList(ITEMS_ON_PAGE, true);
+    };
+
+    const onTriggerFavorite = ({ src, isFavorite }: Card) => {
+      const list = [...store.state.favoriteList];
+
+      if (isFavorite) {
+        list.splice(list.indexOf(src), 1);
+      } else {
+        list.push(src);
+      }
+
+      store.dispatch(ActionTypes.SetFavoriteList, list);
     };
 
     watch(breedName, () => {
-      if (breedName.value) {
-        getRandomDogsListByBreed(ITEMS_ON_PAGE, breedName.value);
-      } else {
-        getRandomDogsList(ITEMS_ON_PAGE);
-      }
+      getRandomDogsList(ITEMS_ON_PAGE);
     });
 
     return {
-      loading: ref(false),
       breedName,
+      loading,
+      inited,
       getRandomDogsList,
-      getRandomDogsListByBreed,
+      loadMore,
+      onTriggerFavorite,
       dogsList: computed(() => store.state.dogsList),
-      onTriggerFavorite: ({ src, isFavorite }: Card) => {
-        const list = [...store.state.favoriteList];
-
-        if (isFavorite) {
-          list.splice(list.indexOf(src), 1);
-        } else {
-          list.push(src);
-        }
-
-        store.dispatch(ActionTypes.SetFavoriteList, list);
-      },
       favoriteList: computed(() => store.state.favoriteList)
     };
   },
   async mounted() {
-    this.loading = true;
-    if (this.breedName) {
-      await this.getRandomDogsListByBreed(ITEMS_ON_PAGE, this.breedName);
-    } else {
-      await this.getRandomDogsList(ITEMS_ON_PAGE);
-    }
-    this.loading = false;
+    await this.getRandomDogsList(ITEMS_ON_PAGE);
+    this.inited = true;
   }
 });
 </script>

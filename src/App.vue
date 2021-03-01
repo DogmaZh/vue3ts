@@ -19,14 +19,12 @@ export default {
       {
         id: 0,
         text: "Home",
-        route: "home",
-        icon: "home"
+        route: "home"
       },
       {
         id: 1,
         text: "Favorites",
-        route: "favorites",
-        icon: "favorite"
+        route: "favorites"
       }
     ];
 
@@ -51,5 +49,9 @@ export default {
 a {
   text-decoration: none;
   color: inherit;
+}
+
+body {
+  overflow-y: scroll;
 }
 </style>
