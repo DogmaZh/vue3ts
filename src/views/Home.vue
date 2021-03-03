@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <h1 class="home__title">
+    <h1 class="home__title" v-to-test="'home-title'">
       {{
         breedName
           ? breedName.charAt(0).toUpperCase() + breedName.slice(1)
@@ -10,12 +10,16 @@
     </h1>
     <cards-list
       v-if="inited"
+      v-to-test="'home-list'"
       class="home__list"
       :loading="loading"
+      :trigger-offset="0"
+      :data-breed-name="breedName"
       @getMore="loadMore"
     >
       <card-item
         v-for="dog in dogsList"
+        v-to-test="'card-item'"
         :key="dog"
         :src="dog"
         :is-favorite="favoriteList.indexOf(dog) !== -1"

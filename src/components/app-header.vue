@@ -1,19 +1,28 @@
 <template>
   <header class="header">
-    <div class="header__title" @click="toTop">{{ title }}</div>
+    <div class="header__title" v-to-test="'page-title'" @click="toTop">
+      {{ title }}
+    </div>
     <div class="header__breed-select">
       <base-select
+        v-to-test="'breed-select'"
         :modelValue="breedName"
         :items="breedsList"
         @update:modelValue="breedName = $event"
       />
-      <div v-if="breedName" class="header__breed-clear" @click="breedName = ''">
+      <div
+        v-if="breedName"
+        v-to-test="'breed-clear'"
+        class="header__breed-clear"
+        @click="breedName = ''"
+      >
         Clear
       </div>
     </div>
     <nav class="header__links">
       <router-link
         v-for="item in items"
+        v-to-test="`header-link-${item.route}`"
         class="header__link"
         active-class="header__link--active"
         :key="item.id"

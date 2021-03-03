@@ -1,7 +1,12 @@
 <template>
-  <div class="card-item">
+  <div class="card-item" :class="{ 'card-item--favorite': isFavorite }">
     <div class="card-item__image-container">
-      <img class="card-item__image" :src="src" @click="triggerFavorite" />
+      <img
+        class="card-item__image"
+        v-to-test="'card-item-image'"
+        :src="src"
+        @click="triggerFavorite"
+      />
       <div class="card-item__to-favorite">
         <base-icon
           class="card-item__to-favorite-icon"

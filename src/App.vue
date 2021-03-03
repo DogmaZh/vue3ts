@@ -1,5 +1,5 @@
 <template>
-  <div class="app" id="app">
+  <div class="app">
     <app-header :items="navItems" title="Dogs App" />
     <main class="app__content">
       <router-view></router-view>
