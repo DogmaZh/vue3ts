@@ -1,2 +1,2 @@
-export { default as baseSelect } from "./base-select.vue";
-export { default as baseIcon } from "./base-icon.vue";
+export { baseSelect } from "./base-select";
+export { baseIcon } from "./base-icon";

@@ -5,14 +5,12 @@ describe("Favroites page tests", () => {
     cy.visit("/favorites");
   });
 
-  it("successfuly loads", () => {});
-
   it("displays page title", () => {
-    cy.get("[data-cypress='favorites-title']").should("be.visible");
+    cy.get("[data-test='favorites-title']").should("be.visible");
   });
 
   it("shows that user didnt selected any favorite cards", () => {
-    cy.get("[data-cypress='favorites-not-found']").should("be.visible");
+    cy.get("[data-test='favorites-not-found']").should("be.visible");
   });
 
   it("selecting 5 items as favorite and display them", () => {
@@ -26,13 +24,13 @@ describe("Favroites page tests", () => {
     cy.wait("@getDogsList").then(() => {
       for (let i = 1; i <= 5; i++) {
         cy.get(
-          `[data-cypress='home-list'] > :nth-child(${i}) [data-cypress='card-item-image']`
+          `[data-test='home-list'] > :nth-child(${i}) [data-test='card-item-image']`
         ).click();
       }
     });
 
     cy.visit("/favorites");
-    cy.get("[data-cypress='favorites-list']")
+    cy.get("[data-test='favorites-list']")
       .children()
       .should("have.length", 5);
   });

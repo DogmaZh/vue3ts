@@ -9,7 +9,7 @@
 
 <script lang="ts">
 import { NavItem } from "@/models";
-import appHeader from "@/components/app-header.vue";
+import { appHeader } from "@/components/app-header";
 
 export default {
   name: "App",

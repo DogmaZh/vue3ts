@@ -5,28 +5,26 @@ describe("Home page tests", () => {
     cy.visit("/");
   });
 
-  it("successfuly loads", () => {});
-
   it("navigating to favorites and back", () => {
-    cy.get("[data-cypress='header-link-favorites']").click();
+    cy.get("[data-test='header-link-favorites']").click();
     cy.url().should("include", "/favorites");
-    cy.get("[data-cypress='header-link-home']").click();
+    cy.get("[data-test='header-link-home']").click();
   });
 
   it("displays application name", () => {
-    cy.get("[data-cypress='page-title']").should("be.visible");
+    cy.get("[data-test='page-title']").should("be.visible");
   });
 
   it("shows dogs initial list", () => {
-    cy.get("[data-cypress='home-list']")
+    cy.get("[data-test='home-list']")
       .children()
       .should("have.length", 20);
   });
 
   it("makes item card favorite and back", () => {
-    cy.get("[data-cypress='home-list'] > :nth-child(1)").as("cardItem");
+    cy.get("[data-test='home-list'] > :nth-child(1)").as("cardItem");
     cy.get(
-      "[data-cypress='home-list'] > :nth-child(1) [data-cypress='card-item-image']"
+      "[data-test='home-list'] > :nth-child(1) [data-test='card-item-image']"
     ).as("cardImage");
 
     cy.get("@cardImage").click();
@@ -47,7 +45,7 @@ describe("Home page tests", () => {
     cy.scrollTo("bottom");
 
     cy.wait("@getDogsList").then(() => {
-      cy.get("[data-cypress='home-list']")
+      cy.get("[data-test='home-list']")
         .children()
         .should("have.length", 40);
     });
@@ -67,9 +65,9 @@ describe("Home page tests", () => {
     cy.reload();
 
     cy.wait("@getBreeds").then(() => {
-      cy.get("[data-cypress='breed-select'] select").as("breedSelect");
-      cy.get("[data-cypress='home-list']").as("homeList");
-      cy.get("[data-cypress='home-title']").as("homeTitle");
+      cy.get("[data-test='breed-select'] select").as("breedSelect");
+      cy.get("[data-test='home-list']").as("homeList");
+      cy.get("[data-test='home-title']").as("homeTitle");
 
       cy.get("@breedSelect").select("affenpinscher");
 
@@ -87,7 +85,7 @@ describe("Home page tests", () => {
           "affenpinscher"
         );
 
-        cy.get("[data-cypress='breed-clear']").click();
+        cy.get("[data-test='breed-clear']").click();
         cy.get("@breedSelect").should("have.value", null);
         cy.get("@homeTitle").contains("Random Dogs List");
       });

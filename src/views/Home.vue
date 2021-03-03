@@ -34,8 +34,8 @@
 import { computed, defineComponent, ref, watch } from "vue";
 import { useStore } from "vuex";
 import ActionTypes from "@/store/action-types";
-import cardItem from "@/components/card-item.vue";
-import cardsList from "@/components/cards-list.vue";
+import { cardItem } from "@/components/card-item";
+import { cardsList } from "@/components/cards-list";
 
 import { ITEMS_ON_PAGE } from "@/constants";
 import { Card } from "@/models";

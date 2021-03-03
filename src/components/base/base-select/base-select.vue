@@ -5,7 +5,12 @@
       :value="modelValue"
       @change="$emit('update:modelValue', $event.target.value)"
     >
-      <option v-for="item in items" :key="item">{{ item }}</option>
+      <option
+        v-for="item in items"
+        v-to-test="'base-select-option'"
+        :key="item"
+        >{{ item }}</option
+      >
     </select>
     <base-icon
       class="base-select__control base-select__control-arrow"
